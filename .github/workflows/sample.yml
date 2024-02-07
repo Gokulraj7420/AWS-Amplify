@@ -1,0 +1,68 @@
+name: E2E Automation CQA
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: string
+        description: 'Test env to execute tests. Examples: dev, predevNN, staging, prod'
+        required: true
+        default: dev
+      parallel:
+        type: choice
+        default: true
+        options:
+          - true
+          - false
+      enableRetry:
+        type: choice
+        default: true
+        options:
+          - true
+          - false
+      username:
+        type: string
+        required: false
+  schedule:
+    - cron: '45 01 * * 1-5'
+
+env:
+  MANUAL_RUN_PROPS:
+    '{
+      "testEnv" : "${{ github.event.inputs.environment }}",
+      "parallel" : "${{ github.event.inputs.parallel }}",
+      "enableRetry" : "${{ github.event.inputs.enableRetry }}",
+      "allurePrefix" : "cqa-testing/${{ github.event.inputs.environment }}",
+      "username" : "${{ github.event.inputs.username }}"
+    }'
+  CRON_RUN_PROPS:
+    '{
+      "testEnv" : "dev",
+      "parallel" : "true",
+      "enableRetry" : "true",
+      "allurePrefix" : "cqa-testing/dev"
+      "username" :""
+    }'
+
+jobs:
+  props:
+    runs-on: ubuntu-latest
+    outputs:
+      env_vars: ${{ steps.extract-props.outputs.env_vars }}
+    steps:
+      - name: Build Extract properties
+        id: extract-props
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            echo "env_vars=${{ toJson(env.MANUAL_RUN_PROPS) }}" >> $GITHUB_OUTPUT
+          else
+            echo "env_vars=${{ toJson(env.CRON_RUN_PROPS) }}" >> $GITHUB_OUTPUT
+          fi
+      - name: Deploy Stage
+        uses: fjogeleit/http-request-action@v1
+        with:
+           url: 'https://f65b-223-178-83-171.ngrok-free.app/api/create'
+           method: 'POST'
+           # username: ${{ secrets.AWX_USER }}
+           # password: ${{ secrets.AWX_PASSWORD }}
+           customHeaders: '{"Content-Type": "application/json"}'
+           data: '{"key_1": "value_1", "key_2": "value_2"}'
