@@ -57,15 +57,15 @@ jobs:
           else
             echo "env_vars=${{ toJson(env.CRON_RUN_PROPS) }}" >> $GITHUB_OUTPUT
           fi
-      # - name: Deploy Stage
-      #   uses: fjogeleit/http-request-action@v1
-      #   with:
-      #      url: 'https://f65b-223-178-83-171.ngrok-free.app/api/create'
-      #      method: 'POST'
-      #      # username: ${{ secrets.AWX_USER }}
-      #      # password: ${{ secrets.AWX_PASSWORD }}
-      #      customHeaders: '{"Content-Type": "application/json"}'
-      #      data: '{"key_1": "value_1", "key_2": "value_2"}'
+      - name: Deploy Stage
+        uses: fjogeleit/http-request-action@v1
+        with:
+           url: 'https://f4a5-223-178-85-228.ngrok-free.app/api/hello'
+           method: 'POST'
+           # username: ${{ secrets.AWX_USER }}
+           # password: ${{ secrets.AWX_PASSWORD }}
+           customHeaders: '{"Content-Type": "application/json"}'
+           data: '{"key_1": "value_1", "key_2": "value_2"}'
 
   DeployProd:
     name: Deploy to Production
