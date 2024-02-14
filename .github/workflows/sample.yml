@@ -60,12 +60,12 @@ jobs:
       - name: Deploy Stage
         uses: fjogeleit/http-request-action@v1
         with:
-           url: 'https://f4a5-223-178-85-228.ngrok-free.app/api/hello'
+           url: 'https://ouow563i35aqdho22iz5zilgai.appsync-api.us-east-2.amazonaws.com/graphql'
            method: 'POST'
            # username: ${{ secrets.AWX_USER }}
            # password: ${{ secrets.AWX_PASSWORD }}
-           customHeaders: '{"Content-Type": "application/json"}'
-           data: '{"key_1": "value_1", "key_2": "value_2"}'
+           customHeaders: '{"Content-Type": "application/json", "x-api-key": "da2-pus63fgwtrgdrizhsjk2hnuy5a" }'
+           data: '{"query":"mutation MyMutation {\n  createDashboard(input: {Branch: \"CQA\", PRname: \"Hpv4\", User: \"cb_gokulraj\", approved_by: \"\", created_time: \"12/02/2024\", action: \"\", approved_time: \"\", full_suite_test_link: \"https://cb-qa-reports.s3.amazonaws.com/cqa-testing/dev/7869077221/report1/index.html https://cb-qa-reports.s3.amazonaws.com/cqa-testing/dev/7869077221/report2/index.html\", p1_test_link: \"https://cb-qa-reports.s3.amazonaws.com/cqa-testing/staging/7868245183/index.html\", result: \"failed\"}) {\n    id\n  }\n}","variables":{}}'
 
   # DeployProd:
   #   name: Deploy to Production
