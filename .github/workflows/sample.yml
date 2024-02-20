@@ -64,15 +64,15 @@ jobs:
           echo "$GITHUB_RUN_ID"
           echo "${{ github.ref_name }}"
           echo "${{ github.run_id }}"
-      # - name: Deploy Stage
-      #   uses: fjogeleit/http-request-action@v1
-      #   with:
-      #      url: 'https://ouow563i35aqdho22iz5zilgai.appsync-api.us-east-2.amazonaws.com/graphql'
-      #      method: 'POST'
-      #      # username: ${{ secrets.AWX_USER }}
-      #      # password: ${{ secrets.AWX_PASSWORD }}
-      #      customHeaders: '{"Content-Type": "application/json", "x-api-key": "da2-pus63fgwtrgdrizhsjk2hnuy5a" }'
-      #      data: '{"query":"mutation MyMutation {\n  createCqaDashboard(input: {Branch: \"${{ github.ref_name }}\", PR_Id: \"12345\", PR_title: \"Cqa-qwerty\", User: \"\", action: \"\", approved_by: \"\", approved_time: \"\", created_time: \"\", environment: \"\", full_suite_parallel2: \"\", full_suite_parallel1: \"\", githubrunner_id: \"${{ github.run_id }}\", p1_test_link: \"\", pending_deployments_git_link: \"\", result: \"\"})\n}","variables":{}}'
+      - name: Deploy Stage
+        uses: fjogeleit/http-request-action@v1
+        with:
+           url: 'https://ouow563i35aqdho22iz5zilgai.appsync-api.us-east-2.amazonaws.com/graphql'
+           method: 'POST'
+           # username: ${{ secrets.AWX_USER }}
+           # password: ${{ secrets.AWX_PASSWORD }}
+           customHeaders: '{"Content-Type": "application/json", "x-api-key": "da2-pus63fgwtrgdrizhsjk2hnuy5a" }'
+           data: '{"query":"mutation MyMutation {\n  createCqaDashboard(input: {Branch: \"${{ github.ref_name }}\", PR_Id: \"12345\", PR_title: \"Cqa-qwerty\", User: \"$GITHUB_ACTOR\", action: \"\", approved_by: \"\", approved_time: \"\", created_time: \"${{ github.event.repository.updated_at}}\", environment: \"${{ github.event.inputs.environment }}\", full_suite_parallel2: \"https://cb-qa-reports.s3.amazonaws.com/${{ env.SERENITY_REPORT_PREFIX }}/${{ github.run_id }}/report2/index.html\", full_suite_parallel1: \"https://cb-qa-reports.s3.amazonaws.com/${{ env.SERENITY_REPORT_PREFIX }}/${{ github.run_id }}/report1/index.html\", githubrunner_id: \"${{ github.run_id }}\", p1_test_link: \"https://cb-qa-reports.s3.amazonaws.com/${{ env.SERENITY_REPORT_PREFIX }}/${{ github.run_id }}/index.html\", pending_deployments_git_link: \"$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/runs/${{ github.run_id }}/pending_deployments\", result: \"failure\"})\n}","variables":{}}'
            
   # DeployProd:
   #   name: Deploy to Production
