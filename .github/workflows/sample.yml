@@ -57,16 +57,23 @@ jobs:
           else
             echo "env_vars=${{ toJson(env.CRON_RUN_PROPS) }}" >> $GITHUB_OUTPUT
           fi
-      - name: Deploy Stage
-        uses: fjogeleit/http-request-action@v1
-        with:
-           url: 'https://ouow563i35aqdho22iz5zilgai.appsync-api.us-east-2.amazonaws.com/graphql'
-           method: 'POST'
-           # username: ${{ secrets.AWX_USER }}
-           # password: ${{ secrets.AWX_PASSWORD }}
-           customHeaders: '{"Content-Type": "application/json", "x-api-key": "da2-pus63fgwtrgdrizhsjk2hnuy5a" }'
-           data: '{"query":"mutation MyMutation {\n  createDashboard(input: {Branch: \"CQA\", PRname: \"Hpv4\", User: \"cb_gokulraj\", approved_by: \"\", created_time: \"12/02/2024\", action: \"\", approved_time: \"\", full_suite_test_link: \"https://cb-qa-reports.s3.amazonaws.com/cqa-testing/dev/7869077221/report1/index.html https://cb-qa-reports.s3.amazonaws.com/cqa-testing/dev/7869077221/report2/index.html\", p1_test_link: \"https://cb-qa-reports.s3.amazonaws.com/cqa-testing/staging/7868245183/index.html\", result: \"failed\"}) {\n    id\n  }\n}","variables":{}}'
-
+          echo "${{ GITHUB_ACTION_REPOSITORY }}"
+          echo "${{ GITHUB_ACTOR }}"
+          echo "${{ GITHUB_API_URL }}"
+          echo "${{ GITHUB_REPOSITORY }}"
+          echo "${{ GITHUB_RUN_ID }}"
+          echo "${{ github.ref_name }}"
+          echo "${{ github.run_id }}"
+      # - name: Deploy Stage
+      #   uses: fjogeleit/http-request-action@v1
+      #   with:
+      #      url: 'https://ouow563i35aqdho22iz5zilgai.appsync-api.us-east-2.amazonaws.com/graphql'
+      #      method: 'POST'
+      #      # username: ${{ secrets.AWX_USER }}
+      #      # password: ${{ secrets.AWX_PASSWORD }}
+      #      customHeaders: '{"Content-Type": "application/json", "x-api-key": "da2-pus63fgwtrgdrizhsjk2hnuy5a" }'
+      #      data: '{"query":"mutation MyMutation {\n  createCqaDashboard(input: {Branch: \"${{ github.ref_name }}\", PR_Id: \"12345\", PR_title: \"Cqa-qwerty\", User: \"\", action: \"\", approved_by: \"\", approved_time: \"\", created_time: \"\", environment: \"\", full_suite_parallel2: \"\", full_suite_parallel1: \"\", githubrunner_id: \"${{ github.run_id }}\", p1_test_link: \"\", pending_deployments_git_link: \"\", result: \"\"})\n}","variables":{}}'
+           
   # DeployProd:
   #   name: Deploy to Production
   #   needs: [props]
