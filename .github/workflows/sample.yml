@@ -22,8 +22,8 @@ on:
       username:
         type: string
         required: false
-  schedule:
-    - cron: '45 01 * * 1-5'
+  # schedule:
+  #   - cron: '45 01 * * 1-5'
 
 env:
   MANUAL_RUN_PROPS:
